@@ -1,7 +1,6 @@
 
 import os
 import csv
-#import sys
 
 #Path
 os.chdir(os.path.dirname(__file__))
@@ -24,17 +23,16 @@ def financial_analysis(record):
     #Total months
     total_months = len(date)
     
-    #Greatest increase in profit
+    #Greatest increase and decrease in profit
     update_date_list = date.pop(0)  #To remove first entry in the date list
     gdifference = dict.fromkeys(date)
     gdifference.update(zip(date,difference))
 
-    #print(gdifference)
     max_increase = max(difference)
     max_decrease = min(difference)
     
-    max_month = max(gdifference, key=gdifference.get)
-    min_month = min(gdifference, key=gdifference.get)
+    max_month = max(gdifference, key=gdifference.get)   #Get greatest increase month by key
+    min_month = min(gdifference, key=gdifference.get)   #Get greatest decrease month by key
     
     print(f"Financial Analysis")
     print(f"----------------------------")
@@ -44,20 +42,27 @@ def financial_analysis(record):
     print(f"Greatest Increase in Profits: {str(max_month)} (${str(max_increase)})")
     print(f"Greatest Decrease in Profits: {str(min_month)} (${str(max_decrease)})")
     
-    #os.chdir(os.path.dirname(__file__))
-    #analysis_txt = os.path.join('Analysis','analysis.txt')
-    #with open(analysis_txt,'w') as outfile:
-    #    print(f"Financial Analysis". file=outfile)
-
+    #Export output to txt file
+    os.chdir(os.path.dirname(__file__))
+    analysis_txt = os.path.join('Analysis','analysis.txt')
+    file = open(analysis_txt,'w')
+    file.write('Financial Analysis\n')
+    file.write('----------------------------\n')
+    file.write("Total months: " + str(total_months) + "\n")
+    file.write("Total: $" + str(total) + "\n")
+    file.write("Average Change: $" + str(format_average_change) + "\n")
+    file.write("Greatest Increase in Profits: " + str(max_month) + " ($" + str(max_increase) + ")" + "\n")
+    file.write("Greatest Decrease in Profits: " + str(min_month) + " ($" + str(max_decrease) + ")" + "\n")
+ 
 # Read in the CSV file
 with open(budget_data_csv, 'r') as csvfile:
 
-    # Split the data on commas
     reader = csv.DictReader(csvfile)
 
-    #header = next(csvreader)
+    #Create lists for each column
     date = []
     pl = []
+    
     # Loop through the data
     date_col = {'Date': []}
     num_col = {'Profit/Losses': []}
