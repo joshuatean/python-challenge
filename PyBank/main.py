@@ -68,8 +68,6 @@ with open(budget_data_csv, 'r') as csvfile:
     pl = []
     
     # Loop through the data
-    date_col = {'Date': []}
-    num_col = {'Profit/Losses': []}
     for record in reader:
         date.append(record['Date'])
         pl.append(int(record['Profit/Losses']))
