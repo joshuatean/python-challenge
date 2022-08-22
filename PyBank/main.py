@@ -1,4 +1,3 @@
-
 import os
 import csv
 
@@ -12,12 +11,14 @@ def financial_analysis(record):
     #Total
     total = sum(pl)
 
-    #Find the difference between each profit/loss record
-    difference = [pl[i+1]-pl[i] for i in range(len(pl)-1)]
+    #Find the difference between each profit/loss record and save result to a list
+    difference = [pl[i+1]-pl[i] for i in range(len(pl)-1)] 
     total_difference = sum(difference)
 
     #Find the average change
     average_change = total_difference/len(difference)
+
+    #Format result to 2 decimal places
     format_average_change = "{:.2f}".format(average_change)
 
     #Total months
@@ -25,8 +26,8 @@ def financial_analysis(record):
     
     #Greatest increase and decrease in profit
     update_date_list = date.pop(0)  #To remove first entry in the date list
-    gdifference = dict.fromkeys(date)
-    gdifference.update(zip(date,difference))
+    gdifference = dict.fromkeys(date)   #Create a new dictionary, set keys using Date
+    gdifference.update(zip(date,difference))    #Update dictionary with entries from the date list and difference list
 
     max_increase = max(difference)
     max_decrease = min(difference)
@@ -34,6 +35,7 @@ def financial_analysis(record):
     max_month = max(gdifference, key=gdifference.get)   #Get greatest increase month by key
     min_month = min(gdifference, key=gdifference.get)   #Get greatest decrease month by key
     
+    #Print output to terminal
     print(f"Financial Analysis")
     print(f"----------------------------")
     print(f"Total months: {str(total_months)}")
@@ -45,6 +47,8 @@ def financial_analysis(record):
     #Export output to txt file
     os.chdir(os.path.dirname(__file__))
     analysis_txt = os.path.join('Analysis','analysis.txt')
+
+    #Write output to txt file
     file = open(analysis_txt,'w')
     file.write('Financial Analysis\n')
     file.write('----------------------------\n')
@@ -71,4 +75,3 @@ with open(budget_data_csv, 'r') as csvfile:
         pl.append(int(record['Profit/Losses']))
     
     financial_analysis(record)
-    
